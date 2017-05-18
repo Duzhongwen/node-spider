@@ -1,0 +1,25 @@
+.content {
+    border: 1px solid #eeeeee;
+}
+.content input{
+    margin: 4% 0% 0% 1%;
+    border-radius: 8px;
+}
+.content:nth-child(1){
+    float: left;
+}
+.img-description{
+    margin-left: 4%;
+    width: 80%;
+}
+img{
+    width: 140px;
+    height: 140px;
+}
+#save{
+    margin-left: 50%;
+}
+.control-label {
+    text-align: right;
+    margin-bottom: auto;
+}

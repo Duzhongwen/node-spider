@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>node-spider</title>
+  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="/static/jquery.gridly.css" rel="stylesheet" type="text/css" />
+  <link href="/static/index.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div class="form-group">
+    <label class="col-sm-2 control-label text-success">
+              微信文章链接
+          </label>
+          <div class="col-sm-4">
+              <div class="input-group">
+                  <input class="form-control" type="text" id="search-input">
+                  <div class="input-group-btn">
+                      <button id="search"  type="button" class="btn btn-success">
+                          <i class="fa fa-search"></i> 搜索
+                      </button>
+                  </div>
+              </div>
+          </div>
+   </div>
+   
+      <% include ./content.ejs %>
+   
+   <button type="button" class="btn btn-primary" id="save">保存</button>
+</body>
+</html>
+<script src="/static/libs/jquer/jquery.min.js"></script>
+<script src="/static/libs/jquery-1.11.1.min.js"></script>
+<script src="/static/libs/jquery-ui.min.js"></script>
+<script src="/static/index.js"></script>

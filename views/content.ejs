@@ -1,0 +1,12 @@
+<% data.article = data.article.length ? data.article : [] %>
+<ul class="artical-detail test" id="sortable" title="<%= data.title%>" author="<%= data.author%>" summary="<%= data.summary%>">
+<% for(var i=0; i<data.article.length; i++) {%>
+    <li class="content input-group" style="margin-bottom: 1%; ">
+        <span class="input-group-addon" id="basic-addon1"><img src="<%= data.article[i].src %>"  class="article-img "/></span>
+        <input type="text" class="form-control"  value="<%= data.article[i].description %>" style="border-radius: 10px;width: 90%">
+        <button type="button" class="btn btn-success delete" style="margin: 4% 1%;">
+            <i class="fa fa-trash"></i> 刪除
+         </button>
+    </li>
+<% } %>
+</ul>
