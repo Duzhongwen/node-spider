@@ -20,68 +20,93 @@ Artical.prototype.getContent = function(wechatUrl, req, res, next){
         var main = $('#js_article');
 
         var imgPathArr = main.find('img');
-
         var back_arr = [];
         // 提取页面中的图片并对图片url进行处理
         imgPathArr.each(function () {
             var imgPath = $(this).attr('data-src');
-            imgtype = $(this).attr('data-type');
+            var imgtype = $(this).attr('data-type');
             if (imgPath && imgtype) {
                 var back_img1 = imgPath.split('?');
                 var back_img2 = back_img1[0].toString().split('/');
                 var len2 = back_img2.length;
                 back_img2[len2-1] = '640';
-                var back_img3 = back_img2.join('/') + '?' + back_img1[1].toString().split('=').join('.') + '&tp=webp&wxfrom=5&wx_lazy=1';
+                var back_img3 = "http://read.html5.qq.com/image?src=forum&q=5&r=0&imgflag=7&imageUrl=" + back_img2.join('/') + '?' + back_img1[1].toString();
                 back_arr.push(back_img3);
             }
         });
-
         var title = $('#activity-name').text().replace(/\s+/g, "");
         var author = $('#post-user').text();
 
         var article = [];
-        var count = 0;
-        var isort = 0; //用来表示back_arr 的索引
+        
         var index = 0; // 图片index的索引
+        var count = 0;
         var summary = [];
         var my_span_arr = [];
-        // 解析文章获取详细内容
-        $('#img-content').find('p').each(function () {
+        var text = "";
+
+        $('#js_content').find('p').each(function () {
             var my_span = $(this);
-            if((my_span.text() && my_span.text().length > 0)&&(my_span.text() !== " ")){
-                summary.push(my_span.text().replace(/\s+/g, ""));
+            // 将段落的文字拼接
+            if ((my_span.find('span').text() && my_span.find('span').text().length > 0 && my_span.find('span').text() !== "")) {
+               text += my_span.find('span').text().replace(/\s+/g, "");
             }
-            // 匹配文章中的图片
-            if (my_span.children('img').length) {
-
+            // 文章第一段是文字的处理
+            if(count === 0 && text !== ""){
                 my_span_arr.push({
-                    'data':back_arr[isort],
-                    'type':0,
-                    'index':index
+                    'data': "",
+                    'type': 0,
+                    'index': 0
                 });
-
-                //保存获取到的图片与原始说明
                 my_span_arr.push({
-                    'data':summary[index],
-                    'type':1,
-                    'index':index+1
+                    'data': "",
+                    'type': 1,
+                    'index': 1
                 });
-    
-                
-                // 前端需要展示的图片与说明
-                var obj = {
-                    'description':summary[index] || "",
-                    'src':back_arr[isort],
-                    'index':index
-                };
-                article.push(obj);
-                isort++;
+                article.push({
+                    'description': "",
+                    'src': ""
+                });
                 index +=2;
+             }
+             
+             // 按图片显示位置截取文字
+             if(my_span.find('img').length && text !== ""){
+                summary.push(text); 
+                text = "";
             }
-            count++;
+            count ++;
         });
-
-        summary.splice(0,1);        //删除第一行标题
+        var isort = 0; //用来表示back_arr 的索引
+        if(my_span_arr[1]){
+           my_span_arr[1].data = summary[0];
+           article[0].description = summary[0];
+           isort = 1;     
+        }
+        back_arr.forEach(function(item){
+            
+            // 匹配文章中的图片
+            my_span_arr.push({
+                'data': item,
+                'type':0,
+                'index':index
+            });
+             //保存获取到的图片与原始说明
+            my_span_arr.push({
+                'data':summary[isort] || "",
+                'type':1,
+                'index':index+1
+            });
+            // 前端需要展示的图片与说明
+            var obj = {
+                'description': summary[isort],
+                'src': item    
+            };
+            article.push(obj);
+            isort++;
+            index +=2;
+        })
+        
 
         var myArticle = {
             title: title,
@@ -150,7 +175,6 @@ Artical.prototype.writeFile = function(newArtical,req, res){
         });
     })
     .catch(function(err){
-        console.log('dshgafjshafjkdsah');
         res.status({
             code: 500,
             msg: "生成json出错"

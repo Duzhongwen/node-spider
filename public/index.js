@@ -43,13 +43,13 @@ $(function(){
         $(".content").each(function(){
             var obj = {
                 type: 0,
-                data:  $(this).find('img').attr('src'),
+                data:  $(this).find('img').attr('src') || "",
                 index: count
             };
             articalData.data.push(obj);
             var temp = {
                 type: 1,
-                data:  $(this).find('input').val(),
+                data:  $(this).find('input').val() || "",
                 index: count+1
             }
             articalData.data.push(temp);
